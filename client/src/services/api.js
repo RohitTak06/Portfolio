@@ -1,0 +1,48 @@
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+
+/**
+ * Health check query.
+ */
+export const checkApiHealth = async () => {
+  try {
+    const res = await fetch(`${API_BASE}/health`, {
+      headers: { Accept: 'application/json' },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn('[API] Health check unreachable:', err.message);
+    return { success: false, status: 'unreachable' };
+  }
+};
+
+/**
+ * Submit contact form to Express backend -> MongoDB.
+ */
+export const submitContactForm = async (formData) => {
+  const res = await fetch(`${API_BASE}/contact`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    const errorMsg = data.errors ? data.errors.join(' ') : data.message || 'Submission failed.';
+    throw new Error(errorMsg);
+  }
+
+  return data;
+};
+
+/**
+ * Get resume download links through Express API.
+ */
+export const getResumeDownloadUrl = (type = 'pdf', inline = false) => {
+  const extension = type === 'docx' ? 'docx' : 'pdf';
+  return `${API_BASE}/resume/${extension}${inline ? '?inline=true' : ''}`;
+};

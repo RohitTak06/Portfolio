@@ -1,0 +1,19 @@
+{
+  "name": "rohit-tak-portfolio",
+  "version": "1.0.0",
+  "description": "Production-grade MERN Stack Personal Portfolio for Rohit Tak showcasing verified GitHub projects and full-stack architecture.",
+  "author": "Rohit Tak <rohittak006@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "start": "npm --prefix server start",
+    "build": "npm --prefix client run build",
+    "test": "npm --prefix server test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
+  }
+}
